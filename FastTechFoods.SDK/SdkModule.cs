@@ -34,7 +34,7 @@ namespace FastTechFoods.SDK
             return services;
         }
 
-        public static async Task<IServiceCollection> AddRabbitMqConnectionAsync(
+        public static IServiceCollection AddRabbitMqConnectionAsync(
             this IServiceCollection services,
             string hostName,
             string userName,
@@ -50,13 +50,13 @@ namespace FastTechFoods.SDK
                 Password = password
             };
 
-            var connection = await factory.CreateConnectionAsync();
+            var connection = factory.CreateConnection();
             services.AddSingleton(connection);
 
-            services.AddScoped(sp =>
+            services.AddScoped<IModel>(sp =>
             {
                 var conn = sp.GetRequiredService<IConnection>();
-                return conn.CreateChannelAsync().Result;
+                return conn.CreateModel(); 
             });
 
             return services;
