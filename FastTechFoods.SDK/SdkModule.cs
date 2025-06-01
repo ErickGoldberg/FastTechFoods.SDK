@@ -1,4 +1,6 @@
-﻿using FastTechFoods.SDK.Persistence.Repository;
+﻿using FastTechFoods.SDK.Middleware;
+using FastTechFoods.SDK.Persistence.Repository;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -70,6 +72,11 @@ namespace FastTechFoods.SDK
             });
 
             return services;
+        }
+
+        public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
         }
     }
 }
